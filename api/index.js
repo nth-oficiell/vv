@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+const jwt = require('jsonwebtoken');
 
-// Chemins des fichiers JSON dans /tmp (persistant sur Vercel)
+// Chemins des fichiers JSON dans /tmp
 const DATA_DIR = '/tmp/data';
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
@@ -79,8 +80,7 @@ if (!fs.existsSync(ORDERS_FILE)) {
     writeJSON(ORDERS_FILE, []);
 }
 
-// JWT simple
-const jwt = require('jsonwebtoken');
+// JWT
 const JWT_SECRET = process.env.JWT_SECRET || 'kzlook-super-secret-2026';
 
 function generateToken(user) {
@@ -184,7 +184,7 @@ module.exports = async (req, res) => {
             const { productId, paypalName } = req.body;
             
             const products = readJSON(PRODUCTS_FILE);
-            const product = products.find(p => p.id === productId || p._id === productId);
+            const product = products.find(p => p.id === productId);
             
             if (!product || product.stock <= 0) {
                 return res.status(400).json({ error: 'Produit indisponible' });
@@ -224,30 +224,50 @@ module.exports = async (req, res) => {
             return res.json(config);
         }
 
-        // ==================== ADMIN ====================
+        // ==================== ADMIN AUTH ====================
         if (path === '/api/admin/auth' && method === 'POST') {
             const { password } = req.body;
             
             if (password === 'kzlook2026ontop') {
-                return res.json({ success: true });
+                // Créer un token admin temporaire
+                const adminToken = jwt.sign(
+                    { isAdmin: true, temp: true },
+                    JWT_SECRET,
+                    { expiresIn: '1h' }
+                );
+                return res.json({ success: true, token: adminToken });
             }
             return res.status(401).json({ success: false });
         }
 
-        // Vérification admin pour les routes protégées
-        const isAdminRoute = path.startsWith('/api/admin/');
-        if (isAdminRoute && path !== '/api/admin/auth') {
-            const token = req.headers.authorization?.split(' ')[1];
-            const userData = verifyToken(token);
+        // ==================== ROUTES ADMIN PROTÉGÉES ====================
+        // Vérification pour toutes les routes admin (sauf /api/admin/auth)
+        if (path.startsWith('/api/admin/') && path !== '/api/admin/auth') {
+            const authHeader = req.headers.authorization;
             
+            if (!authHeader) {
+                return res.status(401).json({ error: 'Non autorisé' });
+            }
+
+            const token = authHeader.split(' ')[1];
+            const decoded = verifyToken(token);
+
+            if (!decoded) {
+                return res.status(401).json({ error: 'Token invalide' });
+            }
+
+            // Vérifier si c'est un admin (soit via token utilisateur avec isAdmin, soit token temporaire)
             const users = readJSON(USERS_FILE);
-            const user = users.find(u => u.id === userData?.id);
+            const user = users.find(u => u.id === decoded.id);
             
-            if (!user?.isAdmin && !req.headers.authorization?.startsWith('admin')) {
+            const isAuthorized = (user && user.isAdmin) || decoded.temp;
+
+            if (!isAuthorized) {
                 return res.status(401).json({ error: 'Non autorisé' });
             }
         }
 
+        // Routes admin
         if (path === '/api/admin/stats' && method === 'GET') {
             const products = readJSON(PRODUCTS_FILE);
             const orders = readJSON(ORDERS_FILE);
@@ -275,7 +295,7 @@ module.exports = async (req, res) => {
             const { price, stock } = req.body;
             
             const products = readJSON(PRODUCTS_FILE);
-            const product = products.find(p => p.id === id || p._id === id);
+            const product = products.find(p => p.id === id);
             
             if (product) {
                 product.price = parseFloat(price);
