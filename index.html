@@ -35,7 +35,6 @@
             min-height: 100vh;
         }
 
-        /* Background */
         .bg-gradient {
             position: fixed;
             top: 0;
@@ -59,7 +58,6 @@
             z-index: -1;
         }
 
-        /* Header */
         header {
             position: sticky;
             top: 0;
@@ -107,6 +105,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            text-decoration: none;
         }
 
         .btn-primary {
@@ -124,7 +123,6 @@
             background: transparent;
             border: 1px solid var(--border);
             color: var(--text);
-            text-decoration: none;
         }
 
         .btn-outline:hover {
@@ -132,7 +130,6 @@
             background: rgba(88, 101, 242, 0.1);
         }
 
-        /* User info */
         .user-info {
             display: flex;
             align-items: center;
@@ -171,7 +168,6 @@
             color: var(--danger);
         }
 
-        /* Categories */
         .categories {
             display: flex;
             gap: 0.5rem;
@@ -198,7 +194,6 @@
             border-color: var(--primary);
         }
 
-        /* Products grid */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -323,7 +318,6 @@
             cursor: not-allowed;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -452,7 +446,6 @@
             font-weight: 600;
         }
 
-        /* Admin panel */
         .admin-panel {
             display: none;
             padding: 2rem;
@@ -563,7 +556,6 @@
             color: white;
         }
 
-        /* Toast */
         .toast-container {
             position: fixed;
             bottom: 2rem;
@@ -592,7 +584,6 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* Loading */
         .loading {
             text-align: center;
             padding: 4rem;
@@ -613,7 +604,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             header {
                 padding: 1rem;
@@ -771,7 +761,6 @@
         let currentProduct = null;
         let adminBuffer = '';
 
-        // ==================== CHARGEMENT ====================
         document.addEventListener('DOMContentLoaded', async () => {
             await loadProducts();
             await checkSession();
@@ -779,16 +768,19 @@
             setupAdminDetection();
         });
 
-        // ==================== API CALLS ====================
         async function apiCall(endpoint, method = 'GET', data = null) {
             const options = {
                 method,
                 headers: { 'Content-Type': 'application/json' }
             };
             
-            const token = localStorage.getItem('token');
-            if (token) {
-                options.headers['Authorization'] = `Bearer ${token}`;
+            const adminToken = localStorage.getItem('adminToken');
+            const userToken = localStorage.getItem('token');
+            
+            if (adminToken) {
+                options.headers['Authorization'] = `Bearer ${adminToken}`;
+            } else if (userToken) {
+                options.headers['Authorization'] = `Bearer ${userToken}`;
             }
             
             if (data) {
@@ -805,7 +797,6 @@
             }
         }
 
-        // ==================== PRODUITS ====================
         async function loadProducts() {
             const data = await apiCall('/api/products');
             if (data && data.products) {
@@ -833,7 +824,7 @@
                     <div class="product-stock ${stockClass}">
                         ${p.stock > 0 ? `Stock: ${p.stock}` : 'Épuisé'}
                     </div>
-                    <button class="btn-buy" onclick="buy('${p._id || p.id}')" ${p.stock === 0 ? 'disabled' : ''}>
+                    <button class="btn-buy" onclick="buy('${p.id}')" ${p.stock === 0 ? 'disabled' : ''}>
                         ${p.stock > 0 ? 'Acheter' : 'Indisponible'}
                     </button>
                 </div>
@@ -862,7 +853,6 @@
             });
         }
 
-        // ==================== AUTH ====================
         function openAuthModal() {
             document.getElementById('auth-modal').classList.add('active');
         }
@@ -957,6 +947,7 @@
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+            localStorage.removeItem('adminToken');
             currentUser = null;
             updateUIForUser();
             hideAdminPanel();
@@ -978,7 +969,6 @@
             }
         }
 
-        // ==================== ACHAT ====================
         function buy(productId) {
             if (!currentUser) {
                 showToast('Connectez-vous pour acheter', 'error');
@@ -1012,13 +1002,12 @@
                 window.open(data.paypalLink + '/' + data.amount, '_blank');
                 closeOrderModal();
                 showToast('Commande créée !');
-                loadProducts(); // Refresh stock
+                loadProducts();
             } else {
                 showToast(data?.error || 'Erreur', 'error');
             }
         }
 
-        // ==================== ADMIN ====================
         function setupAdminDetection() {
             let buffer = '';
             document.addEventListener('keydown', (e) => {
@@ -1042,7 +1031,10 @@
         async function checkAdminPassword() {
             const password = document.getElementById('admin-password').value;
             
-            if (password === 'kzlook2026ontop') {
+            const data = await apiCall('/api/admin/auth', 'POST', { password });
+            
+            if (data && data.success) {
+                localStorage.setItem('adminToken', data.token);
                 closeAdminModal();
                 showAdminPanel();
                 loadAdminData();
@@ -1065,7 +1057,6 @@
         }
 
         async function loadAdminData() {
-            // Stats
             const stats = await apiCall('/api/admin/stats');
             if (stats) {
                 document.getElementById('total-sales').textContent = stats.totalSales + '€';
@@ -1074,7 +1065,6 @@
                 document.getElementById('total-users').textContent = stats.totalUsers;
             }
 
-            // Produits
             const productsData = await apiCall('/api/admin/products');
             if (productsData && productsData.products) {
                 document.getElementById('admin-products').innerHTML = `
@@ -1091,9 +1081,9 @@
                             ${productsData.products.map(p => `
                                 <tr>
                                     <td>${p.emoji} ${p.name}</td>
-                                    <td><input class="admin-input" id="price-${p._id || p.id}" value="${p.price}" step="0.1"></td>
-                                    <td><input class="admin-input" id="stock-${p._id || p.id}" value="${p.stock}"></td>
-                                    <td><button class="btn btn-primary" style="padding: 0.3rem 1rem;" onclick="updateProduct('${p._id || p.id}')">✓</button></td>
+                                    <td><input class="admin-input" id="price-${p.id}" value="${p.price}" step="0.1"></td>
+                                    <td><input class="admin-input" id="stock-${p.id}" value="${p.stock}"></td>
+                                    <td><button class="btn btn-primary" style="padding: 0.3rem 1rem;" onclick="updateProduct('${p.id}')">✓</button></td>
                                 </tr>
                             `).join('')}
                         </tbody>
@@ -1101,7 +1091,6 @@
                 `;
             }
 
-            // Commandes
             const ordersData = await apiCall('/api/admin/orders');
             if (ordersData && ordersData.orders) {
                 document.getElementById('admin-orders').innerHTML = ordersData.orders.length ? `
@@ -1140,7 +1129,6 @@
                 ` : '<p>Aucune commande</p>';
             }
 
-            // Utilisateurs
             const usersData = await apiCall('/api/admin/users');
             if (usersData && usersData.users) {
                 document.getElementById('admin-users').innerHTML = `
@@ -1167,7 +1155,6 @@
                 `;
             }
 
-            // Config
             const configData = await apiCall('/api/config');
             if (configData) {
                 document.getElementById('config-paypal').value = configData.paypalMe;
@@ -1214,7 +1201,6 @@
             }
         }
 
-        // ==================== TOAST ====================
         function showToast(msg, type = 'success') {
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
