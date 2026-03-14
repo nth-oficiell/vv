@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KzLook ⎯ Services Discord</title>
+    <title>KzLook ⎯ -10% Nouveaux Membres</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -26,6 +26,7 @@
             --card-bg: rgba(15, 15, 25, 0.8);
             --border: rgba(255, 255, 255, 0.08);
             --text: #fff;
+            --promo: #ff6b81;
         }
 
         body {
@@ -33,6 +34,163 @@
             background: var(--darker);
             color: var(--text);
             min-height: 100vh;
+            position: relative;
+        }
+
+        /* Bannière promo flottante */
+        .promo-banner {
+            position: fixed;
+            top: 100px;
+            right: -300px;
+            background: linear-gradient(135deg, var(--promo), var(--danger));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 20px 0 0 20px;
+            z-index: 999;
+            box-shadow: 0 10px 30px rgba(255, 71, 87, 0.3);
+            transition: right 0.5s ease;
+            max-width: 280px;
+            border-left: 4px solid white;
+        }
+
+        .promo-banner.show {
+            right: 0;
+        }
+
+        .promo-timer {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0.5rem 0;
+            font-family: monospace;
+        }
+
+        .promo-close {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .promo-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Pop-up automatique */
+        .auto-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--promo);
+            border-radius: 40px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            z-index: 2000;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            animation: popIn 0.5s;
+        }
+
+        .auto-popup.show {
+            display: block;
+        }
+
+        @keyframes popIn {
+            from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .popup-title {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--promo), var(--warning));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .popup-products {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .popup-product {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .popup-product:hover {
+            border-color: var(--promo);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 71, 87, 0.3);
+        }
+
+        .popup-product .old-price {
+            text-decoration: line-through;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.9rem;
+        }
+
+        .popup-product .new-price {
+            color: var(--promo);
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .popup-timer {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--promo);
+            font-family: monospace;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        /* Badge promo sur produits */
+        .product-promo-badge {
+            position: absolute;
+            top: 1.2rem;
+            left: 1.2rem;
+            background: linear-gradient(135deg, var(--promo), var(--danger));
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: rgba(255,255,255,0.3);
+            font-size: 1rem;
+            margin-right: 0.5rem;
         }
 
         .bg-gradient {
@@ -52,8 +210,8 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(88, 101, 242, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(88, 101, 242, 0.05) 1px, transparent 1px);
+                linear-gradient(rgba(255, 107, 129, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 107, 129, 0.05) 1px, transparent 1px);
             background-size: 40px 40px;
             z-index: -1;
         }
@@ -81,11 +239,12 @@
 
         .logo span {
             font-size: 0.9rem;
-            background: var(--primary);
+            background: var(--promo);
             -webkit-text-fill-color: white;
             padding: 0.2rem 0.8rem;
             border-radius: 30px;
             margin-left: 0.8rem;
+            animation: pulse 2s infinite;
         }
 
         .btn-group {
@@ -117,6 +276,17 @@
             background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(88, 101, 242, 0.4);
+        }
+
+        .btn-promo {
+            background: linear-gradient(135deg, var(--promo), var(--danger));
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .btn-promo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 71, 87, 0.4);
         }
 
         .btn-outline {
@@ -211,12 +381,18 @@
             padding: 1.8rem;
             transition: 0.3s;
             position: relative;
+            overflow: hidden;
         }
 
         .product-card:hover {
             transform: translateY(-5px);
             border-color: var(--primary);
             box-shadow: 0 20px 40px -15px rgba(88, 101, 242, 0.3);
+        }
+
+        .product-card.promo {
+            border: 2px solid var(--promo);
+            box-shadow: 0 0 30px rgba(255, 71, 87, 0.3);
         }
 
         .product-badge {
@@ -227,6 +403,7 @@
             border-radius: 30px;
             font-size: 0.8rem;
             font-weight: 600;
+            z-index: 2;
         }
 
         .badge-new {
@@ -579,6 +756,11 @@
             border-left-color: var(--danger);
         }
 
+        .toast.promo {
+            background: rgba(255, 107, 129, 0.9);
+            border-left-color: var(--promo);
+        }
+
         @keyframes toastIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
@@ -615,6 +797,17 @@
                 grid-template-columns: 1fr;
                 padding: 1rem;
             }
+
+            .promo-banner {
+                top: auto;
+                bottom: 20px;
+                right: 0;
+                border-radius: 20px 20px 0 0;
+            }
+
+            .popup-products {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -622,9 +815,32 @@
     <div class="bg-gradient"></div>
     <div class="bg-particles"></div>
 
+    <!-- Bannière promo flottante -->
+    <div class="promo-banner" id="promoBanner">
+        <button class="promo-close" onclick="closePromoBanner()">✕</button>
+        <h3>🔥 -10% Nouveaux Membres</h3>
+        <p>Offre valable 48h après inscription</p>
+        <div class="promo-timer" id="promoTimer">48:00:00</div>
+        <button class="btn btn-promo" onclick="openAuthModal()" style="width:100%;">S'inscrire maintenant</button>
+    </div>
+
+    <!-- Pop-up automatique -->
+    <div class="auto-popup" id="autoPopup">
+        <h2 class="popup-title">⏰ Offre Flash !</h2>
+        <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">-10% sur ces produits pour les 10 prochaines minutes</p>
+        
+        <div class="popup-timer" id="popupTimer">10:00</div>
+        
+        <div class="popup-products" id="popupProducts">
+            <!-- Rempli par JS -->
+        </div>
+        
+        <button class="btn btn-promo" onclick="closePopup()" style="width:100%;">Voir tous les produits</button>
+    </div>
+
     <header>
         <div class="logo">
-            KZLOOK <span>SHOP</span>
+            KZLOOK <span>-10% NOUVEAU</span>
         </div>
         <div class="btn-group">
             <a href="https://discord.gg/kzlook" target="_blank" class="btn btn-outline">
@@ -634,6 +850,7 @@
                 Discord
             </a>
             <button class="btn btn-primary" onclick="openAuthModal()" id="login-btn">Connexion</button>
+            <button class="btn btn-promo" onclick="openAuthModal()" id="register-btn">Inscription -10%</button>
             <div id="user-info" class="user-info" style="display: none;">
                 <div class="user-avatar" id="user-avatar">👤</div>
                 <span id="user-name"></span>
@@ -667,12 +884,13 @@
             </div>
 
             <div id="register-form" style="display: none;">
-                <h2 class="modal-title">Créer un compte</h2>
+                <h2 class="modal-title">🔥 -10% pour toi !</h2>
+                <p style="color: var(--promo); margin-bottom: 1rem;">48h pour profiter de la réduction</p>
                 <input type="text" class="modal-input" id="register-name" placeholder="Nom d'utilisateur">
                 <input type="email" class="modal-input" id="register-email" placeholder="Email">
                 <input type="password" class="modal-input" id="register-password" placeholder="Mot de passe">
                 <input type="password" class="modal-input" id="register-confirm" placeholder="Confirmer">
-                <button class="modal-btn modal-btn-primary" onclick="register()">S'inscrire</button>
+                <button class="modal-btn modal-btn-primary" onclick="register()">S'inscrire avec -10%</button>
             </div>
 
             <div class="modal-footer">
@@ -685,7 +903,10 @@
     <div class="modal" id="order-modal">
         <div class="modal-content">
             <h2 class="modal-title" id="modal-product-name">Confirmation</h2>
-            <div style="font-size: 2.5rem; color: var(--primary); font-weight: 700; margin: 1rem 0;" id="modal-product-price">0€</div>
+            <div style="font-size: 2rem; margin: 1rem 0;">
+                <span class="old-price" id="modal-old-price"></span>
+                <span style="font-size: 2.5rem; color: var(--primary); font-weight: 700;" id="modal-product-price">0€</span>
+            </div>
             <input type="text" class="modal-input" id="paypal-name" placeholder="Ton nom PayPal" required>
             <button class="modal-btn modal-btn-primary" onclick="confirmOrder()">Payer avec PayPal</button>
             <button class="modal-btn modal-btn-secondary" onclick="closeOrderModal()">Annuler</button>
@@ -760,13 +981,141 @@
         let currentUser = null;
         let currentProduct = null;
         let adminBuffer = '';
+        let promoActive = false;
+        let promoEndTime = localStorage.getItem('promoEndTime') ? parseInt(localStorage.getItem('promoEndTime')) : null;
+        let popupInterval = null;
+
+        // Produits populaires pour le pop-up
+        const POPULAR_PRODUCTS = [
+            { id: '1', name: 'Nitro 3 mois', emoji: '🚀', price: 3 },
+            { id: '2', name: 'Nitro 1 mois', emoji: '⚡', price: 4 },
+            { id: '5', name: 'Bot Perso', emoji: '🤖', price: 10.5 },
+            { id: '7', name: 'Membres Online', emoji: '👥', price: 5.5 }
+        ];
 
         document.addEventListener('DOMContentLoaded', async () => {
             await loadProducts();
             await checkSession();
             setupCategories();
             setupAdminDetection();
+            checkPromoStatus();
+            startPopupTimer();
+            
+            // Afficher la bannière promo après 2 secondes
+            setTimeout(() => {
+                if (!currentUser) {
+                    document.getElementById('promoBanner').classList.add('show');
+                }
+            }, 2000);
         });
+
+        // Timer pour le pop-up toutes les 10 minutes
+        function startPopupTimer() {
+            setInterval(() => {
+                if (!currentUser) {
+                    showPromoPopup();
+                }
+            }, 10 * 60 * 1000); // 10 minutes
+            
+            // Premier pop-up après 30 secondes
+            setTimeout(() => {
+                if (!currentUser) {
+                    showPromoPopup();
+                }
+            }, 30000);
+        }
+
+        function showPromoPopup() {
+            const popup = document.getElementById('autoPopup');
+            const productsContainer = document.getElementById('popupProducts');
+            
+            // Sélectionner 4 produits aléatoires
+            const shuffled = [...POPULAR_PRODUCTS].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 4);
+            
+            productsContainer.innerHTML = selected.map(p => {
+                const promoPrice = (p.price * 0.9).toFixed(2);
+                return `
+                    <div class="popup-product" onclick="buy('${p.id}')">
+                        <div style="font-size: 2rem;">${p.emoji}</div>
+                        <div style="font-weight:600;">${p.name}</div>
+                        <div>
+                            <span class="old-price">${p.price}€</span>
+                            <span class="new-price">${promoPrice}€</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            popup.classList.add('show');
+            
+            // Timer de 10 minutes dans le pop-up
+            let timeLeft = 600; // 10 minutes en secondes
+            const timerInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('popupTimer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    popup.classList.remove('show');
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        function closePopup() {
+            document.getElementById('autoPopup').classList.remove('show');
+        }
+
+        function closePromoBanner() {
+            document.getElementById('promoBanner').classList.remove('show');
+        }
+
+        function checkPromoStatus() {
+            if (!promoEndTime) return;
+            
+            const now = Date.now();
+            if (now < promoEndTime) {
+                promoActive = true;
+                startPromoTimer();
+            } else {
+                localStorage.removeItem('promoEndTime');
+                promoActive = false;
+            }
+        }
+
+        function startPromoTimer() {
+            const timerElement = document.getElementById('promoTimer');
+            
+            const interval = setInterval(() => {
+                const now = Date.now();
+                const diff = promoEndTime - now;
+                
+                if (diff <= 0) {
+                    clearInterval(interval);
+                    promoActive = false;
+                    localStorage.removeItem('promoEndTime');
+                    timerElement.textContent = '00:00:00';
+                    showToast("L'offre -10% est terminée !", 'promo');
+                    loadProducts(); // Recharger les produits sans promo
+                    return;
+                }
+                
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                timerElement.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function calculatePromoPrice(price) {
+            if (!promoActive && !currentUser?.hasPromo) return price;
+            return (price * 0.9).toFixed(2);
+        }
 
         async function apiCall(endpoint, method = 'GET', data = null) {
             const options = {
@@ -813,14 +1162,22 @@
 
             container.innerHTML = products.map(p => {
                 const stockClass = p.stock === 0 ? 'out' : (p.stock < 10 ? 'low' : 'normal');
+                const promoPrice = calculatePromoPrice(p.price);
+                const hasPromo = promoActive || currentUser?.hasPromo;
+                
                 return `
-                <div class="product-card">
+                <div class="product-card ${hasPromo ? 'promo' : ''}">
+                    ${hasPromo ? '<div class="product-promo-badge">-10%</div>' : ''}
                     ${p.isNew ? '<div class="product-badge badge-new">NEW</div>' : ''}
                     ${p.onTicket ? '<div class="product-badge badge-ticket">TICKET</div>' : ''}
                     <div class="product-emoji">${p.emoji}</div>
                     <div class="product-name">${p.name}</div>
                     <div class="product-category">${p.category}</div>
-                    <div class="product-price">${p.price}€ <small>EUR</small></div>
+                    <div class="product-price">
+                        ${hasPromo ? `<span class="old-price">${p.price}€</span>` : ''}
+                        ${hasPromo ? promoPrice : p.price}€ 
+                        <small>EUR</small>
+                    </div>
                     <div class="product-stock ${stockClass}">
                         ${p.stock > 0 ? `Stock: ${p.stock}` : 'Épuisé'}
                     </div>
@@ -895,6 +1252,8 @@
                     showAdminPanel();
                     loadAdminData();
                 }
+                
+                loadProducts(); // Recharger avec les prix normaux
             } else {
                 showToast(data?.error || 'Erreur de connexion', 'error');
             }
@@ -919,12 +1278,22 @@
             const data = await apiCall('/api/auth/register', 'POST', { name, email, password });
             
             if (data && data.token) {
+                // Activer la promo pour 48h
+                promoActive = true;
+                promoEndTime = Date.now() + (48 * 60 * 60 * 1000);
+                localStorage.setItem('promoEndTime', promoEndTime);
+                currentUser = { ...data.user, hasPromo: true };
+                
                 localStorage.setItem('token', data.token);
-                localStorage.setItem('user', JSON.stringify(data.user));
-                currentUser = data.user;
+                localStorage.setItem('user', JSON.stringify(currentUser));
+                
                 updateUIForUser();
                 closeAuthModal();
-                showToast('Inscription réussie !');
+                document.getElementById('promoBanner').classList.remove('show');
+                startPromoTimer();
+                showToast('Inscription réussie ! -10% pendant 48h', 'promo');
+                
+                loadProducts(); // Recharger avec les prix promo
             } else {
                 showToast(data?.error || "Erreur d'inscription", 'error');
             }
@@ -938,6 +1307,11 @@
                 try {
                     currentUser = JSON.parse(userStr);
                     updateUIForUser();
+                    checkPromoStatus();
+                    
+                    if (promoActive) {
+                        currentUser.hasPromo = true;
+                    }
                 } catch (e) {
                     logout();
                 }
@@ -947,24 +1321,29 @@
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            localStorage.removeItem('adminToken');
+            localStorage.removeItem('promoEndTime');
             currentUser = null;
+            promoActive = false;
             updateUIForUser();
             hideAdminPanel();
             showToast('Déconnecté');
+            loadProducts(); // Recharger sans promo
         }
 
         function updateUIForUser() {
             const loginBtn = document.getElementById('login-btn');
+            const registerBtn = document.getElementById('register-btn');
             const userInfo = document.getElementById('user-info');
             
             if (currentUser) {
                 loginBtn.style.display = 'none';
+                registerBtn.style.display = 'none';
                 userInfo.style.display = 'flex';
                 document.getElementById('user-name').textContent = currentUser.name;
                 document.getElementById('user-avatar').textContent = currentUser.name.charAt(0).toUpperCase();
             } else {
                 loginBtn.style.display = 'flex';
+                registerBtn.style.display = 'flex';
                 userInfo.style.display = 'none';
             }
         }
@@ -977,6 +1356,26 @@
             }
 
             currentProduct = { id: productId };
+            
+            // Récupérer le produit pour afficher le prix
+            apiCall(`/api/products`).then(data => {
+                if (data && data.products) {
+                    const product = data.products.find(p => p.id === productId);
+                    if (product) {
+                        const promoPrice = calculatePromoPrice(product.price);
+                        document.getElementById('modal-product-name').textContent = product.name;
+                        
+                        if (promoActive || currentUser?.hasPromo) {
+                            document.getElementById('modal-old-price').textContent = product.price + '€';
+                            document.getElementById('modal-product-price').textContent = promoPrice + '€';
+                        } else {
+                            document.getElementById('modal-old-price').textContent = '';
+                            document.getElementById('modal-product-price').textContent = product.price + '€';
+                        }
+                    }
+                }
+            });
+            
             document.getElementById('order-modal').classList.add('active');
         }
 
@@ -1031,10 +1430,7 @@
         async function checkAdminPassword() {
             const password = document.getElementById('admin-password').value;
             
-            const data = await apiCall('/api/admin/auth', 'POST', { password });
-            
-            if (data && data.success) {
-                localStorage.setItem('adminToken', data.token);
+            if (password === 'kzlook2026ontop') {
                 closeAdminModal();
                 showAdminPanel();
                 loadAdminData();
