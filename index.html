@@ -24,7 +24,7 @@
             --warning: #ffff00;
             --dark: #0a0a0f;
             --darker: #000000;
-            --card-bg: rgba(0, 20, 0, 0.8);
+            --card-bg: rgba(0, 20, 0, 0.7);
             --border: rgba(0, 255, 65, 0.3);
             --text: #00ff41;
             --glow: 0 0 10px rgba(0, 255, 65, 0.5);
@@ -48,8 +48,8 @@
             width: 100%;
             height: 100%;
             z-index: -2;
-            opacity: 0.7;
-            filter: drop-shadow(0 0 20px #00ff41);
+            opacity: 0.8;
+            filter: drop-shadow(0 0 30px #00ff41);
         }
 
         /* Canvas pour matrix code */
@@ -60,7 +60,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.2;
+            opacity: 0.25;
             pointer-events: none;
         }
 
@@ -87,6 +87,30 @@
             100% { transform: translateY(100vh); }
         }
 
+        /* Binary rain */
+        .binary-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .binary-rain span {
+            position: absolute;
+            color: var(--primary);
+            font-size: 14px;
+            animation: rain linear infinite;
+            opacity: 0.1;
+        }
+
+        @keyframes rain {
+            0% { transform: translateY(-100vh); }
+            100% { transform: translateY(100vh); }
+        }
+
         /* Header style hacker */
         header {
             position: sticky;
@@ -97,7 +121,7 @@
             align-items: center;
             z-index: 100;
             backdrop-filter: blur(10px);
-            background: rgba(0, 10, 0, 0.9);
+            background: rgba(0, 10, 0, 0.5);
             border-bottom: 2px solid var(--primary);
             box-shadow: var(--glow);
         }
@@ -143,8 +167,9 @@
 
         .logo span {
             font-size: 0.9rem;
-            background: var(--primary);
-            color: black;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
             padding: 0.2rem 0.8rem;
             margin-left: 0.8rem;
             animation: blink 1s infinite;
@@ -156,7 +181,7 @@
             50% { opacity: 0.5; }
         }
 
-        /* Boutons verts pleins */
+        /* BOUTONS TRANSPARENTS */
         .btn-group {
             display: flex;
             gap: 0.8rem;
@@ -169,15 +194,16 @@
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: none;
-            background: var(--primary);
-            color: black;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
             text-decoration: none;
             font-family: 'Share Tech Mono', monospace;
             text-transform: uppercase;
             letter-spacing: 2px;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(5px);
             box-shadow: var(--glow);
             border-radius: 4px;
         }
@@ -189,7 +215,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.2), transparent);
             transition: 0.5s;
         }
 
@@ -198,44 +224,42 @@
         }
 
         .btn:hover {
-            transform: translateY(-3px);
+            background: rgba(0, 255, 65, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
             box-shadow: var(--glow-strong);
-            background: #00ff4d;
+            transform: translateY(-2px);
         }
 
         .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary);
+            border-color: var(--primary);
             color: var(--primary);
-            box-shadow: none;
         }
 
         .btn-outline:hover {
-            background: var(--primary);
-            color: black;
-            box-shadow: var(--glow);
+            background: rgba(0, 255, 65, 0.1);
         }
 
         .btn-promo {
-            background: var(--danger);
-            color: white;
-            box-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+            border-color: var(--danger);
+            color: var(--danger);
             animation: pulse-border 2s infinite;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
         }
 
         .btn-promo:hover {
-            background: #ff1a66;
-            box-shadow: 0 0 30px rgba(255, 0, 85, 0.8);
+            background: rgba(255, 0, 85, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
         }
 
         .btn-discord {
-            background: #5865f2;
-            color: white;
-            box-shadow: 0 0 20px rgba(88, 101, 242, 0.5);
+            border-color: #5865f2;
+            color: #5865f2;
         }
 
         .btn-discord:hover {
-            background: #4752c4;
+            background: rgba(88, 101, 242, 0.1);
         }
 
         /* User info */
@@ -244,6 +268,7 @@
             align-items: center;
             gap: 1rem;
             background: rgba(0, 255, 65, 0.1);
+            backdrop-filter: blur(5px);
             padding: 0.3rem 1.5rem 0.3rem 0.3rem;
             border: 2px solid var(--primary);
             border-radius: 4px;
@@ -252,8 +277,9 @@
         .user-avatar {
             width: 40px;
             height: 40px;
-            background: var(--primary);
-            color: black;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -264,7 +290,7 @@
 
         .btn-logout {
             background: transparent;
-            border: 1px solid var(--danger);
+            border: 2px solid var(--danger);
             color: var(--danger);
             padding: 0.5rem 1rem;
             cursor: pointer;
@@ -274,10 +300,10 @@
         }
 
         .btn-logout:hover {
-            background: rgba(255, 0, 85, 0.2);
+            background: rgba(255, 0, 85, 0.1);
             border-color: var(--danger);
             color: var(--danger);
-            box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
         }
 
         /* Catégories */
@@ -302,12 +328,13 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             border-radius: 4px;
+            backdrop-filter: blur(5px);
         }
 
         .category-btn:hover, .category-btn.active {
-            background: var(--primary);
-            color: black;
+            background: rgba(0, 255, 65, 0.1);
             border-color: var(--primary);
+            color: var(--primary);
             box-shadow: var(--glow);
         }
 
@@ -322,7 +349,7 @@
         }
 
         .product-card {
-            background: var(--card-bg);
+            background: rgba(0, 20, 0, 0.6);
             backdrop-filter: blur(10px);
             border: 2px solid var(--border);
             padding: 2rem;
@@ -336,6 +363,7 @@
             border-color: var(--primary);
             box-shadow: var(--glow-strong);
             transform: translateY(-5px);
+            background: rgba(0, 30, 0, 0.7);
         }
 
         .product-card::after {
@@ -345,7 +373,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent 65%, rgba(0, 255, 65, 0.1) 100%);
+            background: linear-gradient(45deg, transparent 65%, rgba(0, 255, 65, 0.05) 100%);
             pointer-events: none;
         }
 
@@ -362,10 +390,11 @@
             font-size: 0.9rem;
             font-weight: 700;
             z-index: 2;
-            background: black;
+            background: transparent;
             border: 2px solid var(--primary);
             color: var(--primary);
             border-radius: 4px;
+            backdrop-filter: blur(5px);
         }
 
         .badge-new {
@@ -382,21 +411,23 @@
             position: absolute;
             top: 1.2rem;
             left: 1.2rem;
-            background: var(--danger);
-            color: white;
+            background: transparent;
+            border: 2px solid var(--danger);
+            color: var(--danger);
             padding: 0.5rem 1.2rem;
             font-size: 0.9rem;
             font-weight: 700;
             z-index: 2;
             animation: blink 2s infinite;
             border-radius: 4px;
-            box-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
         }
 
         .product-emoji {
             font-size: 4rem;
             margin-bottom: 1rem;
-            filter: drop-shadow(0 0 10px var(--primary));
+            filter: drop-shadow(0 0 15px var(--primary));
         }
 
         .product-name {
@@ -442,6 +473,8 @@
             border: 2px solid;
             font-weight: 700;
             border-radius: 4px;
+            background: transparent;
+            backdrop-filter: blur(5px);
         }
 
         .product-stock.normal {
@@ -461,9 +494,9 @@
 
         .btn-buy {
             width: 100%;
-            background: var(--primary);
-            border: none;
-            color: black;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
             padding: 1.2rem;
             font-size: 1.1rem;
             font-weight: 700;
@@ -473,11 +506,14 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             border-radius: 4px;
+            backdrop-filter: blur(5px);
             box-shadow: var(--glow);
         }
 
         .btn-buy:hover:not(:disabled) {
-            background: #00ff4d;
+            background: rgba(0, 255, 65, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
             transform: translateY(-3px);
             box-shadow: var(--glow-strong);
         }
@@ -485,10 +521,11 @@
         .btn-buy:disabled {
             opacity: 0.3;
             cursor: not-allowed;
-            background: #666;
+            border-color: #666;
+            color: #666;
         }
 
-        /* Modals stylés */
+        /* Modals transparents */
         .modal {
             display: none;
             position: fixed;
@@ -496,8 +533,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -508,7 +545,8 @@
         }
 
         .modal-content {
-            background: rgba(0, 10, 0, 0.98);
+            background: rgba(0, 10, 0, 0.7);
+            backdrop-filter: blur(20px);
             border: 3px solid var(--primary);
             padding: 3rem;
             max-width: 500px;
@@ -555,6 +593,7 @@
             gap: 0.5rem;
             margin: 2rem 0;
             background: rgba(0, 255, 65, 0.1);
+            backdrop-filter: blur(5px);
             padding: 0.5rem;
             border-radius: 8px;
         }
@@ -572,11 +611,13 @@
             text-transform: uppercase;
             transition: 0.3s;
             border-radius: 6px;
+            backdrop-filter: blur(5px);
         }
 
         .modal-tab.active {
-            background: var(--primary);
-            color: black;
+            background: rgba(0, 255, 65, 0.2);
+            border-color: var(--primary);
+            color: var(--primary);
             box-shadow: var(--glow);
         }
 
@@ -584,7 +625,8 @@
             width: 100%;
             padding: 1.2rem;
             margin-bottom: 1rem;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
             border: 2px solid var(--border);
             color: var(--primary);
             font-size: 1rem;
@@ -601,9 +643,9 @@
         .modal-btn {
             width: 100%;
             padding: 1.2rem;
-            border: none;
-            background: var(--primary);
-            color: black;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
             font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
@@ -613,28 +655,41 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             border-radius: 6px;
+            backdrop-filter: blur(5px);
             box-shadow: var(--glow);
         }
 
         .modal-btn:hover {
-            background: #00ff4d;
+            background: rgba(0, 255, 65, 0.1);
+            border-color: var(--primary);
             transform: translateY(-3px);
             box-shadow: var(--glow-strong);
         }
 
         .modal-btn-secondary {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            box-shadow: none;
+            border-color: var(--border);
+            color: var(--text);
         }
 
         .modal-btn-secondary:hover {
-            background: var(--primary);
-            color: black;
+            border-color: var(--primary);
+            color: var(--primary);
         }
 
-        /* PANEL ADMIN ULTRA STYLÉ */
+        .modal-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: rgba(0, 255, 65, 0.5);
+        }
+
+        .modal-link {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        /* PANEL ADMIN TRANSPARENT */
         .admin-panel {
             display: none;
             padding: 2rem;
@@ -649,7 +704,8 @@
         }
 
         .admin-header {
-            background: linear-gradient(135deg, rgba(0, 20, 0, 0.95), rgba(0, 40, 0, 0.95));
+            background: rgba(0, 20, 0, 0.7);
+            backdrop-filter: blur(15px);
             border: 3px solid var(--primary);
             padding: 2rem 3rem;
             margin-bottom: 2rem;
@@ -712,7 +768,8 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, rgba(0, 30, 0, 0.95), rgba(0, 50, 0, 0.95));
+            background: rgba(0, 30, 0, 0.6);
+            backdrop-filter: blur(10px);
             border: 2px solid var(--primary);
             padding: 2rem;
             position: relative;
@@ -726,6 +783,7 @@
             transform: translateY(-5px);
             box-shadow: var(--glow-strong);
             border-color: var(--primary);
+            background: rgba(0, 40, 0, 0.7);
         }
 
         .stat-card::before {
@@ -777,7 +835,8 @@
         }
 
         .admin-table {
-            background: linear-gradient(135deg, rgba(0, 20, 0, 0.95), rgba(0, 35, 0, 0.95));
+            background: rgba(0, 20, 0, 0.6);
+            backdrop-filter: blur(10px);
             border: 2px solid var(--primary);
             padding: 2rem;
             margin-bottom: 2rem;
@@ -829,11 +888,12 @@
         }
 
         .admin-table tr:hover {
-            background: rgba(0, 255, 65, 0.05);
+            background: rgba(0, 255, 65, 0.1);
         }
 
         .admin-input {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
             border: 2px solid var(--border);
             padding: 0.8rem;
             color: var(--primary);
@@ -850,7 +910,8 @@
         }
 
         .status-select {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
             border: 2px solid var(--border);
             padding: 0.8rem;
             color: var(--primary);
@@ -865,9 +926,9 @@
         }
 
         .admin-btn {
-            background: var(--primary);
-            border: none;
-            color: black;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
             padding: 0.6rem 1.2rem;
             font-size: 0.9rem;
             font-weight: 700;
@@ -876,23 +937,27 @@
             font-family: 'Share Tech Mono', monospace;
             text-transform: uppercase;
             border-radius: 4px;
+            backdrop-filter: blur(5px);
             box-shadow: var(--glow);
         }
 
         .admin-btn:hover {
-            background: #00ff4d;
+            background: rgba(0, 255, 65, 0.1);
+            border-color: var(--primary);
             transform: translateY(-2px);
             box-shadow: var(--glow-strong);
         }
 
         .admin-btn-danger {
-            background: var(--danger);
-            color: white;
-            box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+            border-color: var(--danger);
+            color: var(--danger);
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
         }
 
         .admin-btn-danger:hover {
-            background: #ff1a66;
+            background: rgba(255, 0, 85, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
         }
 
         /* Bannière promo */
@@ -900,12 +965,13 @@
             position: fixed;
             top: 100px;
             right: -320px;
-            background: linear-gradient(135deg, rgba(20, 0, 0, 0.98), rgba(40, 0, 0, 0.98));
+            background: rgba(20, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
             border: 3px solid var(--danger);
             color: var(--danger);
             padding: 2rem;
             z-index: 999;
-            box-shadow: 0 0 50px rgba(255, 0, 85, 0.5);
+            box-shadow: 0 0 50px rgba(255, 0, 85, 0.3);
             transition: right 0.5s ease;
             max-width: 300px;
             border-radius: 16px 0 0 16px;
@@ -921,7 +987,7 @@
             margin: 1rem 0;
             font-family: monospace;
             color: var(--danger);
-            text-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+            text-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
         }
 
         .promo-close {
@@ -943,8 +1009,9 @@
         }
 
         .promo-close:hover {
-            background: var(--danger);
-            color: black;
+            background: rgba(255, 0, 85, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
         }
 
         /* Pop-up */
@@ -954,13 +1021,14 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, rgba(20, 0, 0, 0.98), rgba(40, 0, 0, 0.98));
+            background: rgba(20, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
             border: 3px solid var(--danger);
             padding: 3rem;
             max-width: 550px;
             width: 90%;
             z-index: 2000;
-            box-shadow: 0 0 70px rgba(255, 0, 85, 0.7);
+            box-shadow: 0 0 70px rgba(255, 0, 85, 0.4);
             animation: popIn 0.5s;
             border-radius: 24px;
         }
@@ -975,7 +1043,7 @@
             color: var(--danger);
             margin-bottom: 1rem;
             text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+            text-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
         }
 
         .popup-products {
@@ -987,6 +1055,7 @@
 
         .popup-product {
             background: rgba(255, 0, 85, 0.1);
+            backdrop-filter: blur(5px);
             border: 2px solid var(--danger);
             padding: 1.5rem;
             text-align: center;
@@ -997,8 +1066,8 @@
 
         .popup-product:hover {
             transform: translateY(-5px);
-            box-shadow: 0 0 30px rgba(255, 0, 85, 0.5);
-            background: rgba(255, 0, 85, 0.2);
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.3);
+            background: rgba(255, 0, 85, 0.15);
         }
 
         .popup-product .old-price {
@@ -1018,7 +1087,7 @@
             font-family: monospace;
             text-align: center;
             margin: 1.5rem 0;
-            text-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+            text-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
         }
 
         /* Toast */
@@ -1030,7 +1099,8 @@
         }
 
         .toast {
-            background: linear-gradient(135deg, rgba(0, 20, 0, 0.98), rgba(0, 40, 0, 0.98));
+            background: rgba(0, 20, 0, 0.8);
+            backdrop-filter: blur(15px);
             border-left: 6px solid var(--primary);
             color: var(--primary);
             padding: 1.2rem 2rem;
@@ -1126,6 +1196,9 @@
     
     <!-- Glitch overlay -->
     <div class="glitch-overlay"></div>
+    
+    <!-- Binary rain -->
+    <div class="binary-rain" id="binaryRain"></div>
 
     <!-- Bannière promo flottante -->
     <div class="promo-banner" id="promoBanner">
@@ -1200,7 +1273,7 @@
                 <input type="email" class="modal-input" id="register-email" placeholder="EMAIL">
                 <input type="password" class="modal-input" id="register-password" placeholder="PASSWORD">
                 <input type="password" class="modal-input" id="register-confirm" placeholder="CONFIRM">
-                <button class="modal-btn btn-promo" onclick="register()" style="color:white;">INITIALIZE</button>
+                <button class="modal-btn btn-promo" onclick="register()" style="color:var(--danger); border-color:var(--danger);">INITIALIZE</button>
             </div>
 
             <div class="modal-footer">
@@ -1233,7 +1306,7 @@
         </div>
     </div>
 
-    <!-- PANEL ADMIN ULTRA STYLÉ -->
+    <!-- PANEL ADMIN TRANSPARENT -->
     <div id="admin-panel" class="admin-panel">
         <div class="admin-header">
             <h1>ADMIN PANEL</h1>
@@ -1297,22 +1370,7 @@
     <div class="toast-container" id="toast-container"></div>
 
     <script>
-        const API_BASE = window.location.origin;
-        let currentUser = null;
-        let currentProduct = null;
-        let adminBuffer = '';
-        let promoActive = false;
-        let promoEndTime = localStorage.getItem('promoEndTime') ? parseInt(localStorage.getItem('promoEndTime')) : null;
-        let popupInterval = null;
-
-        const POPULAR_PRODUCTS = [
-            { id: '1', name: 'Nitro 3 mois', emoji: '🚀', price: 3 },
-            { id: '2', name: 'Nitro 1 mois', emoji: '⚡', price: 4 },
-            { id: '5', name: 'Bot Perso', emoji: '🤖', price: 10.5 },
-            { id: '7', name: 'Membres Online', emoji: '👥', price: 5.5 }
-        ];
-
-        // ==================== CANVAS JUPITER 3D ====================
+        // ==================== CANVAS JUPITER ====================
         function initJupiter() {
             const canvas = document.getElementById('jupiter-canvas');
             const ctx = canvas.getContext('2d');
@@ -1340,7 +1398,7 @@
                 ctx.rotate(jupiter.rotation);
                 
                 ctx.shadowColor = '#00ff41';
-                ctx.shadowBlur = 50;
+                ctx.shadowBlur = 60;
                 
                 // Corps de Jupiter
                 const gradient = ctx.createRadialGradient(-50, -50, 20, 0, 0, jupiter.radius);
@@ -1354,8 +1412,8 @@
                 ctx.fillStyle = gradient;
                 ctx.fill();
                 
-                // Bandes de Jupiter
-                ctx.shadowBlur = 30;
+                // Bandes
+                ctx.shadowBlur = 40;
                 for (let i = 0; i < jupiter.bands; i++) {
                     const y = -jupiter.radius + (i * jupiter.radius * 2 / jupiter.bands);
                     ctx.beginPath();
@@ -1365,7 +1423,7 @@
                     ctx.stroke();
                 }
                 
-                // Grande tache rouge
+                // Tache rouge
                 ctx.beginPath();
                 ctx.ellipse(60, -40, 40, 20, 0, 0, Math.PI * 2);
                 ctx.fillStyle = 'rgba(255, 0, 85, 0.4)';
@@ -1377,7 +1435,7 @@
                 // Anneau
                 ctx.beginPath();
                 ctx.ellipse(0, 0, jupiter.radius * 1.6, jupiter.radius * 0.25, 0, 0, Math.PI * 2);
-                ctx.strokeStyle = 'rgba(0, 255, 65, 0.25)';
+                ctx.strokeStyle = 'rgba(0, 255, 65, 0.3)';
                 ctx.lineWidth = 2;
                 ctx.stroke();
                 
@@ -1430,10 +1488,39 @@
             setInterval(drawMatrix, 35);
         }
 
+        // ==================== BINARY RAIN ====================
+        function initBinaryRain() {
+            const container = document.getElementById('binaryRain');
+            for (let i = 0; i < 100; i++) {
+                const span = document.createElement('span');
+                span.style.left = Math.random() * 100 + '%';
+                span.style.animationDuration = 5 + Math.random() * 10 + 's';
+                span.style.animationDelay = Math.random() * 5 + 's';
+                span.innerHTML = Math.random() > 0.5 ? '0' : '1';
+                container.appendChild(span);
+            }
+        }
+
         initJupiter();
         initMatrix();
+        initBinaryRain();
 
         // ==================== PRODUITS ====================
+        const API_BASE = window.location.origin;
+        let currentUser = null;
+        let currentProduct = null;
+        let adminBuffer = '';
+        let promoActive = false;
+        let promoEndTime = localStorage.getItem('promoEndTime') ? parseInt(localStorage.getItem('promoEndTime')) : null;
+        let popupInterval = null;
+
+        const POPULAR_PRODUCTS = [
+            { id: '1', name: 'Nitro 3 mois', emoji: '🚀', price: 3 },
+            { id: '2', name: 'Nitro 1 mois', emoji: '⚡', price: 4 },
+            { id: '5', name: 'Bot Perso', emoji: '🤖', price: 10.5 },
+            { id: '7', name: 'Membres Online', emoji: '👥', price: 5.5 }
+        ];
+
         document.addEventListener('DOMContentLoaded', async () => {
             await loadProducts();
             await checkSession();
